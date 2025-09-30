@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  ontology-dev:
+    build: .
+    ports:
+      - "8888:8888"  # Jupyter Lab
+      - "8501:8501"  # Streamlit
+    volumes:
+      - ./ontologies:/app/ontologies
+      - ./notebooks:/app/notebooks
+      - ./streamlit_app_dev:/app/streamlit_app_dev
+      - ./start.sh:/app/start.sh
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+    container_name: ontology_development
