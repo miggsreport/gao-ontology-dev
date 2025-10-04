@@ -6,12 +6,12 @@ import os
 
 # Set page config
 st.set_page_config(
-    page_title="**DEV** -- US GAO Antifraud Resource Test Page",
+    page_title="US GAO Antifraud Resource Test Page",
     layout="wide"
 )
 
 # Title
-st.title("**DEV** -- US GAO Antifraud Resource Test Page")
+st.title("**DEV** US GAO Antifraud Resource Test Page")
 st.markdown("Search and explore fraud concepts, instances, and relationships in the GAO's Conceptual Fraud Model")
 
 # Sidebar for ontology management
@@ -340,80 +340,9 @@ ORDER BY ?individualName
                     if total_results > 0:
                         st.success(f"[OK] Found {total_results} total resources related to {fraud_activity_label}")
                         
-                        # Display Fraud Scheme Examples
-                        if fraud_schemes:
-                            st.subheader(f"Fraud Scheme Examples ({len(fraud_schemes)})")
-                            
-                            for i, row in enumerate(fraud_schemes):
-                                scheme_name = str(row.individualName)
-                                fraud_description = str(row.description) if row.description else "No description available"
-                                fraud_narrative_uri = str(row.fraudNarrative) if row.fraudNarrative else "No fraud narrative available"
-                                is_defined_by_url = str(row.isDefinedBy) if row.isDefinedBy else "No definition source available"
-                                
-                                with st.expander(f"{i+1}. {scheme_name}"):
-                                    st.write(f"**Fraud Description:** {fraud_description}")
-                                    st.write("**Fraud Narrative:**")
-                                    st.text(fraud_narrative_uri)
-                                    st.write(f"**Related to:** {fraud_activity_label}")
-                                    st.markdown("---")
-                                    st.caption(f"Source: {is_defined_by_url}")
-                        
-                        # Display Fraud Awareness Resources
-                        if awareness_resources:
-                            st.subheader(f"Fraud Awareness Resources ({len(awareness_resources)})")
-                            
-                            for i, row in enumerate(awareness_resources):
-                                resource_name = str(row.individualName)
-                                definition = str(row.definition) if row.definition else "No definition available"
-                                website = str(row.website) if row.website else ""
-                                is_defined_by_url = str(row.isDefinedBy) if row.isDefinedBy else "No definition source available"
-                                
-                                with st.expander(f"{i+1}. {resource_name}"):
-                                    st.write(f"**Definition:** {definition}")
-                                    if website:
-                                        st.write(f"**Website:** {website}")
-                                    st.write(f"**Related to:** {fraud_activity_label}")
-                                    st.markdown("---")
-                                    st.caption(f"Source: {is_defined_by_url}")
-                        
-                        # Display Fraud Prevention & Detection Guidance
-                        if prevention_resources:
-                            st.subheader(f"Fraud Prevention & Detection Guidance ({len(prevention_resources)})")
-                            
-                            for i, row in enumerate(prevention_resources):
-                                resource_name = str(row.individualName)
-                                definition = str(row.definition) if row.definition else "No definition available"
-                                website = str(row.website) if row.website else ""
-                                is_defined_by_url = str(row.isDefinedBy) if row.isDefinedBy else "No definition source available"
-                                
-                                with st.expander(f"{i+1}. {resource_name}"):
-                                    st.write(f"**Definition:** {definition}")
-                                    if website:
-                                        st.write(f"**Website:** {website}")
-                                    st.write(f"**Related to:** {fraud_activity_label}")
-                                    st.markdown("---")
-                                    st.caption(f"Source: {is_defined_by_url}")
-                        
-                        # Display Fraud Risk Management Principles
-                        if risk_mgmt_resources:
-                            st.subheader(f"Fraud Risk Management Principles ({len(risk_mgmt_resources)})")
-                            
-                            for i, row in enumerate(risk_mgmt_resources):
-                                resource_name = str(row.individualName)
-                                definition = str(row.definition) if row.definition else "No definition available"
-                                website = str(row.website) if row.website else ""
-                                is_defined_by_url = str(row.isDefinedBy) if row.isDefinedBy else "No definition source available"
-                                
-                                with st.expander(f"{i+1}. {resource_name}"):
-                                    st.write(f"**Definition:** {definition}")
-                                    if website:
-                                        st.write(f"**Website:** {website}")
-                                    st.write(f"**Related to:** {fraud_activity_label}")
-                                    st.markdown("---")
-                                    st.caption(f"Source: {is_defined_by_url}")
-                        
-                        # Display GAO Reports
+                        # Display GAO Reports section first (full width)
                         if gao_reports:
+                            st.markdown("---")
                             st.subheader(f"GAO Reports ({len(gao_reports)})")
                             
                             for i, row in enumerate(gao_reports):
@@ -429,6 +358,102 @@ ORDER BY ?individualName
                                     st.write(f"**Related to:** {fraud_activity_label}")
                                     st.markdown("---")
                                     st.caption(f"Source: {is_defined_by_url}")
+                        
+                        st.markdown("---")
+                        
+                        # Create 2x2 grid layout for other resources
+                        col1, col2 = st.columns(2)
+                        
+                        # Top left: Fraud Scheme Examples
+                        with col1:
+                            if fraud_schemes:
+                                st.subheader(f"Fraud Scheme Examples ({len(fraud_schemes)})")
+                                
+                                for i, row in enumerate(fraud_schemes):
+                                    scheme_name = str(row.individualName)
+                                    fraud_description = str(row.description) if row.description else "No description available"
+                                    fraud_narrative_uri = str(row.fraudNarrative) if row.fraudNarrative else "No fraud narrative available"
+                                    is_defined_by_url = str(row.isDefinedBy) if row.isDefinedBy else "No definition source available"
+                                    
+                                    with st.expander(f"{i+1}. {scheme_name}"):
+                                        st.write(f"**Fraud Description:** {fraud_description}")
+                                        st.write("**Fraud Narrative:**")
+                                        st.text(fraud_narrative_uri)
+                                        st.write(f"**Related to:** {fraud_activity_label}")
+                                        st.markdown("---")
+                                        st.caption(f"Source: {is_defined_by_url}")
+                            else:
+                                st.subheader("Fraud Scheme Examples (0)")
+                                st.info("No fraud scheme examples found")
+                        
+                        # Top right: Fraud Prevention & Detection Guidance
+                        with col2:
+                            if prevention_resources:
+                                st.subheader(f"Fraud Prevention & Detection Guidance ({len(prevention_resources)})")
+                                
+                                for i, row in enumerate(prevention_resources):
+                                    resource_name = str(row.individualName)
+                                    definition = str(row.definition) if row.definition else "No definition available"
+                                    website = str(row.website) if row.website else ""
+                                    is_defined_by_url = str(row.isDefinedBy) if row.isDefinedBy else "No definition source available"
+                                    
+                                    with st.expander(f"{i+1}. {resource_name}"):
+                                        st.write(f"**Definition:** {definition}")
+                                        if website:
+                                            st.write(f"**Website:** {website}")
+                                        st.write(f"**Related to:** {fraud_activity_label}")
+                                        st.markdown("---")
+                                        st.caption(f"Source: {is_defined_by_url}")
+                            else:
+                                st.subheader("Fraud Prevention & Detection Guidance (0)")
+                                st.info("No prevention & detection guidance found")
+                        
+                        # Bottom row
+                        col3, col4 = st.columns(2)
+                        
+                        # Bottom left: Fraud Awareness Resources
+                        with col3:
+                            if awareness_resources:
+                                st.subheader(f"Fraud Awareness Resources ({len(awareness_resources)})")
+                                
+                                for i, row in enumerate(awareness_resources):
+                                    resource_name = str(row.individualName)
+                                    definition = str(row.definition) if row.definition else "No definition available"
+                                    website = str(row.website) if row.website else ""
+                                    is_defined_by_url = str(row.isDefinedBy) if row.isDefinedBy else "No definition source available"
+                                    
+                                    with st.expander(f"{i+1}. {resource_name}"):
+                                        st.write(f"**Definition:** {definition}")
+                                        if website:
+                                            st.write(f"**Website:** {website}")
+                                        st.write(f"**Related to:** {fraud_activity_label}")
+                                        st.markdown("---")
+                                        st.caption(f"Source: {is_defined_by_url}")
+                            else:
+                                st.subheader("Fraud Awareness Resources (0)")
+                                st.info("No fraud awareness resources found")
+                        
+                        # Bottom right: Fraud Risk Management Principles
+                        with col4:
+                            if risk_mgmt_resources:
+                                st.subheader(f"Fraud Risk Management Principles ({len(risk_mgmt_resources)})")
+                                
+                                for i, row in enumerate(risk_mgmt_resources):
+                                    resource_name = str(row.individualName)
+                                    definition = str(row.definition) if row.definition else "No definition available"
+                                    website = str(row.website) if row.website else ""
+                                    is_defined_by_url = str(row.isDefinedBy) if row.isDefinedBy else "No definition source available"
+                                    
+                                    with st.expander(f"{i+1}. {resource_name}"):
+                                        st.write(f"**Definition:** {definition}")
+                                        if website:
+                                            st.write(f"**Website:** {website}")
+                                        st.write(f"**Related to:** {fraud_activity_label}")
+                                        st.markdown("---")
+                                        st.caption(f"Source: {is_defined_by_url}")
+                            else:
+                                st.subheader("Fraud Risk Management Principles (0)")
+                                st.info("No fraud risk management principles found")
                     else:
                         st.info(f"No resources found for {fraud_activity_label}")
                         
