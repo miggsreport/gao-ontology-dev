@@ -57,6 +57,8 @@ Synced directories:
 
 ## Git Workflow
 
+Git repository https://github.com/miggsreport/gao-ontology-dev
+
 Standard workflow for version control:
 
 ```bash
