@@ -24,15 +24,17 @@ RUN pip install --no-cache-dir \
     plotly \
     networkx
 
-# Create directories for ontology files and notebooks
-RUN mkdir -p /app/ontologies /app/notebooks /app/streamlit_app
-
 # Expose ports for Jupyter Lab and Streamlit
 EXPOSE 8888 8501
 
 # Copy startup script
 COPY start.sh /app/start.sh
 RUN chmod +x /app/start.sh
+
+# Set Jupyter password
+RUN mkdir -p /root/.jupyter && \
+    python -c "from jupyter_server.auth import passwd; print(passwd('gao123'))" > /tmp/hash.txt && \
+    echo "c.ServerApp.password = '$(cat /tmp/hash.txt)'" >> /root/.jupyter/jupyter_server_config.py
 
 # Set default command
 CMD ["/app/start.sh"]

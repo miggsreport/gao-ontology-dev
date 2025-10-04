@@ -7,8 +7,10 @@ services:
       - "8501:8501"  # Streamlit
     volumes:
       - ./ontologies:/app/ontologies
+      - ./ontologies_master-files:/app/ontologies_master-files
       - ./notebooks:/app/notebooks
       - ./streamlit_app_dev:/app/streamlit_app_dev
+      - ./ontology_taxonomy_mapping:/app/ontology_taxonomy_mapping
       - ./start.sh:/app/start.sh
     environment:
       - JUPYTER_ENABLE_LAB=yes
