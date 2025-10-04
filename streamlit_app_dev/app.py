@@ -50,17 +50,18 @@ def load_ontology_rdflib(file_path):
         st.error(f"Error loading ontology: {str(e)}")
         return None
 
-# Auto-load default ontology function
 def load_default_ontology():
     """Load GFO ontology from repository if available"""
-    default_ontology_path = "gfo_turtle.ttl"
+    # Get the directory where this script is located
+    script_dir = Path(__file__).parent
+    default_ontology_path = script_dir / "gfo_turtle.ttl"
     
-    if os.path.exists(default_ontology_path):
+    if default_ontology_path.exists():
         try:
             with st.spinner("Loading GFO ontology from repository..."):
-                st.session_state.ontology = load_ontology_rdflib(default_ontology_path)
+                st.session_state.ontology = load_ontology_rdflib(str(default_ontology_path))
                 st.session_state.loaded_file = "gfo_turtle.ttl (default)"
-                st.session_state.uploaded_file_path = default_ontology_path
+                st.session_state.uploaded_file_path = str(default_ontology_path)
                 
                 if st.session_state.ontology:
                     triple_count = len(st.session_state.ontology)
@@ -69,6 +70,8 @@ def load_default_ontology():
                     return True
         except Exception as e:
             st.sidebar.error(f"[ERROR] Failed to auto-load default ontology: {str(e)}")
+    else:
+        st.sidebar.warning(f"Default ontology not found at: {default_ontology_path}")
     return False
 
 # Auto-load default ontology on first run
