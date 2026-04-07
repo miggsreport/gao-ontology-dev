@@ -848,7 +848,7 @@ def display_comparison_table(df, is_fraud_scheme=False):
             return 'background-color: #fff3cd'  # Yellow - only in buggy original
         return ''
     
-    styled_df = df[display_cols].style.applymap(
+    styled_df = df[display_cols].style.map(
         highlight_status, subset=['Status']
     )
     
