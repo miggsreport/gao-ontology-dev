@@ -776,7 +776,7 @@ def create_excel_export(comparison_dfs, summary_df, fraud_activity_label):
             df.to_excel(writer, sheet_name=sheet_name, index=False)
     
     output.seek(0)
-    return output
+    return output.getvalue()
 
 
 # =============================================================================
