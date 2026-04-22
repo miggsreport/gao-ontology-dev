@@ -930,6 +930,7 @@ if st.session_state.ontology:
                 # Clear any previous comparison results when new search is run
                 st.session_state.comparison_dfs = None
                 st.session_state.comparison_summary = None
+                st.session_state.excel_export = None
                     
             except Exception as e:
                 st.error(f"[ERROR] SPARQL query failed: {str(e)}")
@@ -987,6 +988,7 @@ if st.session_state.ontology:
         if st.button("Run Comparison", type="primary"):
             fraud_activity = st.session_state.current_fraud_activity
             fraud_activity_label = st.session_state.current_fraud_activity_label
+            st.session_state.excel_export = None
             
             with st.spinner("Running comparison queries..."):
                 comparison_dfs = {}
@@ -1055,17 +1057,18 @@ if st.session_state.ontology:
             
             # Excel export
             st.markdown("#### Export")
-            excel_data = create_excel_export(
-                st.session_state.comparison_dfs,
-                st.session_state.comparison_summary,
-                st.session_state.current_fraud_activity_label
-            )
-            
+            if 'excel_export' not in st.session_state:
+                st.session_state.excel_export = create_excel_export(
+                    st.session_state.comparison_dfs,
+                    st.session_state.comparison_summary,
+                    st.session_state.current_fraud_activity_label
+                )
+
             st.download_button(
                 label="Download Comparison (Excel)",
-                data=excel_data,
+                data=st.session_state.excel_export,
                 file_name=f"AFR_Comparison_{st.session_state.current_fraud_activity}_{pd.Timestamp.now().strftime('%Y%m%d_%H%M')}.xlsx",
-                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.xml"
+                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             )
 
 else:
