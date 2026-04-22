@@ -1057,7 +1057,7 @@ if st.session_state.ontology:
             
             # Excel export
             st.markdown("#### Export")
-            if 'excel_export' not in st.session_state:
+            if not st.session_state.get('excel_export'):
                 st.session_state.excel_export = create_excel_export(
                     st.session_state.comparison_dfs,
                     st.session_state.comparison_summary,
