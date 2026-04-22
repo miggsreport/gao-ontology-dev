@@ -158,6 +158,9 @@ with st.sidebar:
         label_visibility="collapsed"
     )
 
+    st.markdown("---")
+    st.markdown("[GAO Antifraud Resource](https://antifraud.gaoinnovations.gov/resources#top)")
+
 # =============================================================================
 # SESSION STATE INITIALIZATION
 # =============================================================================
