@@ -357,9 +357,9 @@ def process_fraud_scheme_results(results):
 # BUG REPLICATION: The live AFR site does EXACT string matching only when filtering
 # results by fraud activity. It does NOT traverse the subclass hierarchy.
 # For example, when searching for "ConfidenceFraud":
-#   - Finds schemes linked directly to gfo:ConfidenceFraud ✓
+#   - Finds schemes linked directly to gfo:ConfidenceFraud
 #   - Does NOT find schemes linked to gfo:AffinityFraud (even though AffinityFraud 
-#     is a subclass of ConfidenceFraud) ✗
+#     is a subclass of ConfidenceFraud)
 # =============================================================================
 
 def query_fraud_schemes_original_afr(ontology_graph, fraud_activity):
